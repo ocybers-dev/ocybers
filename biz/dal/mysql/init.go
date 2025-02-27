@@ -25,7 +25,6 @@ func Init() {
 	// 自动迁移
 	err = DB.AutoMigrate(
 		&model.User{},
-		&model.Article{},
 	)
 	if err != nil {
 		panic(err)

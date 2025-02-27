@@ -8,8 +8,13 @@ import (
 
 // SendErrResponse  pack error response
 func SendErrResponse(ctx context.Context, c *app.RequestContext, code int, err error) {
-	// todo edit custom code
-	c.String(code, err.Error())
+	c.JSON(code, struct {
+		IsError bool   `json:"error"`
+		ErrMeg  string `json:"err_meg"`
+	}{
+		IsError: true,
+		ErrMeg:  err.Error(),
+	})
 }
 
 // SendSuccessResponse  pack success response

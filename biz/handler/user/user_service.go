@@ -2,10 +2,10 @@ package user
 
 import (
 	"context"
+	service "github.com/ocybers-dev/ocybers/biz/service/user"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	"github.com/ocybers-dev/ocybers/biz/service"
 	"github.com/ocybers-dev/ocybers/biz/utils"
 	user "github.com/ocybers-dev/ocybers/hertz_gen/ocybers/user"
 )

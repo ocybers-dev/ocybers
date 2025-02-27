@@ -36,19 +36,20 @@ type Redis struct {
 }
 
 type Hertz struct {
-	Service         string `yaml:"service"`
-	Address         string `yaml:"address"`
-	EnablePprof     bool   `yaml:"enable_pprof"`
-	EnableGzip      bool   `yaml:"enable_gzip"`
-	EnableAccessLog bool   `yaml:"enable_access_log"`
-	LogLevel        string `yaml:"log_level"`
-	LogFileName     string `yaml:"log_file_name"`
-	LogMaxSize      int    `yaml:"log_max_size"`
-	LogMaxBackups   int    `yaml:"log_max_backups"`
-	LogMaxAge       int    `yaml:"log_max_age"`
-	PaseToIssuer    string `yaml:"paseto_issuer"`
-	PaseToPublicKey string `yaml:"paseto_public_key"`
-	PaseToImplicit  string `yaml:"paseto_implicit"`
+	Service            string `yaml:"service"`
+	Address            string `yaml:"address"`
+	EnablePprof        bool   `yaml:"enable_pprof"`
+	EnableGzip         bool   `yaml:"enable_gzip"`
+	EnableAccessLog    bool   `yaml:"enable_access_log"`
+	LogLevel           string `yaml:"log_level"`
+	LogFileName        string `yaml:"log_file_name"`
+	LogMaxSize         int    `yaml:"log_max_size"`
+	LogMaxBackups      int    `yaml:"log_max_backups"`
+	LogMaxAge          int    `yaml:"log_max_age"`
+	PaseToIssuer       string `yaml:"paseto_issuer"`
+	PaseToSymmetricKey string `yaml:"paseto_symmetric_key"`
+	PaseToImplicit     string `yaml:"paseto_implicit"`
+	PaseToExpired      int    `yaml:"paseto_expired"`
 }
 
 // GetConf gets configuration instance

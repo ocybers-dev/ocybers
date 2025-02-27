@@ -4,8 +4,10 @@ package main
 
 import (
 	"context"
-	"github.com/ocybers-dev/ocybers/biz/dal"
+	"fmt"
 	"time"
+
+	"github.com/ocybers-dev/ocybers/biz/dal"
 
 	gpaseto "aidanwoods.dev/go-paseto"
 	"github.com/cloudwego/hertz/pkg/app"
@@ -36,6 +38,8 @@ func main() {
 
 	// add a ping route to test
 	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+		a, b := ctx.Get("sub")
+		fmt.Println("sub: ", a, b)
 		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
 	})
 
@@ -92,21 +96,20 @@ func registerMiddleware(h *server.Hertz) {
 
 	//paseto(JWT)
 	next := func(ctx context.Context, c *app.RequestContext) bool {
-		// return string(c.Path()) == "/user/login" || string(c.Path()) == "/user/register"
-		return true
+		return string(c.Path()) == "/user/login" || string(c.Path()) == "/user/register"
 	}
-	parseFunc, _ := paseto.NewV4PublicParseFunc(
-		paseto.DefaultPublicKey,
-		[]byte(paseto.DefaultImplicit),
+	parseFunc, _ := paseto.NewV4LocalParseFunc(
+		conf.GetConf().Hertz.PaseToSymmetricKey,
+		[]byte(conf.GetConf().Hertz.PaseToImplicit),
 		paseto.WithIssuer(conf.GetConf().Hertz.PaseToIssuer),
 	)
 	successFunc := func(ctx context.Context, c *app.RequestContext, token *gpaseto.Token) {
-		var username string
-		if err := token.Get("username", &username); err != nil {
-			c.String(consts.StatusBadRequest, "Failed to get '' from token")
-			c.Abort()
+		sub, err := token.GetSubject()
+		if err != nil {
+			hlog.CtxErrorf(ctx, "get subject error: %v", err)
+			return
 		}
-		c.Set("username", username)
+		c.Set("sub", sub)
 	}
 	h.Use(paseto.New(paseto.WithNext(next), paseto.WithParseFunc(parseFunc), paseto.WithSuccessHandler(successFunc)))
 }

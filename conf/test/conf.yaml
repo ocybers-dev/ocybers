@@ -10,8 +10,9 @@ hertz:
   log_max_age: 3
   log_max_backups: 50
   paseto_issuer: "ocybers-issuer"
-  paseto_public_key: "ocybers-public-key"
-  paseto_implicit: "ocybers-implicit"
+  paseto_symmetric_key: "701172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f"
+  paseto_implicit: "ocyber_implicit"
+  paseto_expired: 168
 
 mysql:
   dsn: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8mb4&parseTime=True&loc=Local"
