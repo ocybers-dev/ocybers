@@ -1,0 +1,40 @@
+syntax="proto3";
+
+package user;
+
+option go_package="ocybers/user";
+
+import "api.proto";
+
+service UserService {
+    rpc Login(LoginReq) returns (LoginResp) {
+        option (api.post) = "/user/login";
+    }
+    rpc Register(RegisterReq) returns (RegisterResp) {
+        option (api.post) = "/user/register";
+    }
+}
+
+message RegisterReq {
+    string username = 1;
+    string email = 2;
+    string phone =3;
+    string password = 4;
+    string confirm_password = 5;
+}
+
+message RegisterResp {
+    string user_id = 1;
+}
+
+message LoginReq {
+    string username = 1;
+    string email = 2;
+    string phone = 3;
+    string password = 4;
+}
+
+message LoginResp {
+    string user_id = 1;
+    string token = 2;
+}
