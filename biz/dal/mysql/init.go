@@ -1,6 +1,7 @@
 package mysql
 
 import (
+	"github.com/ocybers-dev/ocybers/biz/dal/model"
 	"github.com/ocybers-dev/ocybers/conf"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -17,6 +18,14 @@ func Init() {
 			PrepareStmt:            true,
 			SkipDefaultTransaction: true,
 		},
+	)
+	if err != nil {
+		panic(err)
+	}
+	// 自动迁移
+	err = DB.AutoMigrate(
+		&model.User{},
+		&model.Article{},
 	)
 	if err != nil {
 		panic(err)

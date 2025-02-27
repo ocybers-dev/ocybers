@@ -5,7 +5,7 @@ gen:
 
 .PHONY: db
 db:
-	@cwgo  model --db_type mysql --dsn "gorm:gorm@tcp(localhost:9910)/gorm?charset=utf8&parseTime=True&loc=Local"
+	@cwgo model --db_type mysql --dsn "gorm:gorm@tcp(localhost:3306)/gorm?charset=utf8&parseTime=True&loc=Local"  --exclude_tables "casbin_rule" --nullable --type_tag
 	@echo "generate db model success"
 
 # 构建docker镜像命令
