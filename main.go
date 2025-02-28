@@ -57,26 +57,8 @@ func main() {
 		// 返回成功响应
 		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
 	})
-	h.GET("/ping1", casbin.AutoDBRoleMW(), func(c context.Context, ctx *app.RequestContext) {
-		// 获取用户标识（sub）
-		sub, exists := ctx.Get("sub")
-		if exists {
-			fmt.Println(sub)
-		}
-		subStr, ok := sub.(string)
-		if !ok {
-			hlog.Warn("'sub' 字段不是字符串类型")
-			ctx.JSON(consts.StatusForbidden, utils.H{"error": "无效的用户标识"})
-			return
-		}
-
-		b, err := casbin.E.AddRoleForUser(subStr, "admin")
-		fmt.Println(b, err)
-
-		// 返回成功响应
-		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
-	})
-
+	//routeInfo := h.Routes()
+	//fmt.Println(routeInfo)
 	h.Spin()
 }
 

@@ -108,9 +108,28 @@ func AutoDBRoleMW() app.HandlerFunc {
 func initPermissions() {
 	// 预设的权限列表，包含路径和方法
 	defaultPolicies := [][]string{
+		// 用户访问权限
 		{"admin", "/ping", "GET"},
 		{"user", "/ping", "GET"},
-		// 添加其他权限配置...
+
+		// RBAC服务接口权限
+		{"admin", "/rbac/create_role", "POST"},
+		{"admin", "/rbac/delete_role", "POST"},
+		{"admin", "/rbac/assign_permission", "POST"},
+		{"admin", "/rbac/revoke_permission", "POST"},
+		{"admin", "/rbac/assign_role_to_user", "POST"},
+		{"admin", "/rbac/revoke_role_from_user", "POST"},
+
+		// 权限检查接口
+		{"user", "/rbac/check_permission", "GET"},
+		{"admin", "/rbac/check_permission", "GET"},
+
+		// 获取角色相关接口
+		{"admin", "/rbac/get_role_permissions", "GET"},
+		{"admin", "/rbac/get_user_roles", "GET"},
+		{"admin", "/rbac/get_all_roles", "GET"},
+
+		// 根据需求添加更多的权限配置...
 	}
 
 	for _, policy := range defaultPolicies {

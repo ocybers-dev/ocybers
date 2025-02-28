@@ -1,1 +1,166 @@
-package idl
+syntax = "proto3";
+
+package rbac;
+
+option go_package = "ocybers/rbac";
+
+// 引入外部的公共定义
+import "api.proto";
+
+// RBAC权限管理服务
+service RBACService {
+  // 创建角色
+  rpc CreateRole(CreateRoleReq) returns (CreateRoleResp) {
+    option (api.post) = "/rbac/create_role";
+  }
+
+  // 删除角色
+  rpc DeleteRole(DeleteRoleReq) returns (DeleteRoleResp) {
+    option (api.post) = "/rbac/delete_role";
+  }
+
+  // 为角色分配权限
+  rpc AssignPermissionToRole(AssignPermissionReq) returns (AssignPermissionResp) {
+    option (api.post) = "/rbac/assign_permission";
+  }
+
+  // 撤销角色的权限
+  rpc RevokePermissionFromRole(RevokePermissionReq) returns (RevokePermissionResp) {
+    option (api.post) = "/rbac/revoke_permission";
+  }
+
+  // 为用户分配角色
+  rpc AssignRoleToUser(AssignRoleReq) returns (AssignRoleResp) {
+    option (api.post) = "/rbac/assign_role_to_user";
+  }
+
+  // 撤销用户角色
+  rpc RevokeRoleFromUser(RevokeRoleReq) returns (RevokeRoleResp) {
+    option (api.post) = "/rbac/revoke_role_from_user";
+  }
+
+  // 检查用户权限
+  rpc CheckPermission(CheckPermissionReq) returns (CheckPermissionResp) {
+    option (api.get) = "/rbac/check_permission";
+  }
+
+  // 获取角色的所有权限
+  rpc GetRolePermissions(GetRolePermissionsReq) returns (GetRolePermissionsResp) {
+    option (api.get) = "/rbac/get_role_permissions";
+  }
+
+  // 获取用户的所有角色
+  rpc GetUserRoles(GetUserRolesReq) returns (GetUserRolesResp) {
+    option (api.get) = "/rbac/get_user_roles";
+  }
+
+  // 获取所有角色
+  rpc GetAllRoles(GetAllRolesReq) returns (GetAllRolesResp) {
+    option (api.get) = "/rbac/get_all_roles";
+  }
+}
+
+// 创建角色请求
+message CreateRoleReq {
+  string role_name = 1;  // 角色名称
+}
+
+// 创建角色响应
+message CreateRoleResp {
+  string role_id = 1;    // 创建的角色ID
+}
+
+// 删除角色请求
+message DeleteRoleReq {
+  string role_id = 1;    // 角色ID
+}
+
+// 删除角色响应
+message DeleteRoleResp {
+  bool success = 1;      // 删除是否成功
+}
+
+// 为角色分配权限请求
+message AssignPermissionReq {
+  string role_id = 1;    // 角色ID
+  string permission = 2; // 权限名称
+}
+
+// 为角色分配权限响应
+message AssignPermissionResp {
+  bool success = 1;      // 分配是否成功
+}
+
+// 撤销角色权限请求
+message RevokePermissionReq {
+  string role_id = 1;    // 角色ID
+  string permission = 2; // 权限名称
+}
+
+// 撤销角色权限响应
+message RevokePermissionResp {
+  bool success = 1;      // 撤销是否成功
+}
+
+// 为用户分配角色请求
+message AssignRoleReq {
+  string user_id = 1;    // 用户ID
+  string role_id = 2;    // 角色ID
+}
+
+// 为用户分配角色响应
+message AssignRoleResp {
+  bool success = 1;      // 分配是否成功
+}
+
+// 撤销用户角色请求
+message RevokeRoleReq {
+  string user_id = 1;    // 用户ID
+  string role_id = 2;    // 角色ID
+}
+
+// 撤销用户角色响应
+message RevokeRoleResp {
+  bool success = 1;      // 撤销是否成功
+}
+
+// 检查用户权限请求
+message CheckPermissionReq {
+  string user_id = 1;    // 用户ID
+  string permission = 2; // 权限名称
+}
+
+// 检查用户权限响应
+message CheckPermissionResp {
+  bool has_permission = 1; // 是否具有该权限
+}
+
+// 获取角色权限请求
+message GetRolePermissionsReq {
+  string role_id = 1;    // 角色ID
+}
+
+// 获取角色权限响应
+message GetRolePermissionsResp {
+  repeated string permissions = 1; // 角色拥有的权限列表
+}
+
+// 获取用户角色请求
+message GetUserRolesReq {
+  string user_id = 1;    // 用户ID
+}
+
+// 获取用户角色响应
+message GetUserRolesResp {
+  repeated string roles = 1; // 用户拥有的角色列表
+}
+
+// 获取所有角色请求
+message GetAllRolesReq {
+  // 无需额外参数
+}
+
+// 获取所有角色响应
+message GetAllRolesResp {
+  repeated string roles = 1; // 所有角色列表
+}

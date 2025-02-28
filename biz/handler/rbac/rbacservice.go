@@ -2,10 +2,10 @@ package rbac
 
 import (
 	"context"
+	rbac2 "github.com/ocybers-dev/ocybers/biz/service/rbac"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	"github.com/ocybers-dev/ocybers/biz/service"
 	"github.com/ocybers-dev/ocybers/biz/utils"
 	rbac "github.com/ocybers-dev/ocybers/hertz_gen/ocybers/rbac"
 )
@@ -22,7 +22,7 @@ func CreateRole(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp := &rbac.CreateRoleResp{}
-	resp, err = service.NewCreateRoleService(ctx, c).Run(&req)
+	resp, err = rbac2.NewCreateRoleService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -43,7 +43,7 @@ func DeleteRole(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp := &rbac.DeleteRoleResp{}
-	resp, err = service.NewDeleteRoleService(ctx, c).Run(&req)
+	resp, err = rbac2.NewDeleteRoleService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -64,7 +64,7 @@ func AssignPermissionToRole(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp := &rbac.AssignPermissionResp{}
-	resp, err = service.NewAssignPermissionToRoleService(ctx, c).Run(&req)
+	resp, err = rbac2.NewAssignPermissionToRoleService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -85,7 +85,7 @@ func RevokePermissionFromRole(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp := &rbac.RevokePermissionResp{}
-	resp, err = service.NewRevokePermissionFromRoleService(ctx, c).Run(&req)
+	resp, err = rbac2.NewRevokePermissionFromRoleService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -106,7 +106,7 @@ func AssignRoleToUser(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp := &rbac.AssignRoleResp{}
-	resp, err = service.NewAssignRoleToUserService(ctx, c).Run(&req)
+	resp, err = rbac2.NewAssignRoleToUserService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -127,7 +127,7 @@ func RevokeRoleFromUser(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp := &rbac.RevokeRoleResp{}
-	resp, err = service.NewRevokeRoleFromUserService(ctx, c).Run(&req)
+	resp, err = rbac2.NewRevokeRoleFromUserService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -148,7 +148,7 @@ func CheckPermission(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp := &rbac.CheckPermissionResp{}
-	resp, err = service.NewCheckPermissionService(ctx, c).Run(&req)
+	resp, err = rbac2.NewCheckPermissionService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -169,7 +169,7 @@ func GetRolePermissions(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp := &rbac.GetRolePermissionsResp{}
-	resp, err = service.NewGetRolePermissionsService(ctx, c).Run(&req)
+	resp, err = rbac2.NewGetRolePermissionsService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -190,7 +190,7 @@ func GetUserRoles(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp := &rbac.GetUserRolesResp{}
-	resp, err = service.NewGetUserRolesService(ctx, c).Run(&req)
+	resp, err = rbac2.NewGetUserRolesService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -211,7 +211,7 @@ func GetAllRoles(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp := &rbac.GetAllRolesResp{}
-	resp, err = service.NewGetAllRolesService(ctx, c).Run(&req)
+	resp, err = rbac2.NewGetAllRolesService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
