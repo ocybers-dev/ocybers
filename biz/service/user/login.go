@@ -3,7 +3,6 @@ package user
 import (
 	"context"
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/cloudwego/hertz/pkg/app"
@@ -72,7 +71,6 @@ func (h *LoginService) Run(req *user.LoginReq) (resp *user.LoginResp, err error)
 	genTokenFunc, err := paseto.NewV4EncryptFunc(conf.GetConf().Hertz.PaseToSymmetricKey, []byte(conf.GetConf().Hertz.PaseToImplicit))
 	if err != nil {
 		hlog.CtxErrorf(h.Context, "生成token函数失败: %v", err)
-		fmt.Println("生成token函数失败: %v", err)
 		return nil, errors.New("内部服务器错误1")
 	}
 	token, err := genTokenFunc(&paseto.StandardClaims{

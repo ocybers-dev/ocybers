@@ -41,6 +41,7 @@ type Hertz struct {
 	EnablePprof        bool   `yaml:"enable_pprof"`
 	EnableGzip         bool   `yaml:"enable_gzip"`
 	EnableAccessLog    bool   `yaml:"enable_access_log"`
+	EnableCasbin       bool   `yaml:"enable_casbin"`
 	LogLevel           string `yaml:"log_level"`
 	LogFileName        string `yaml:"log_file_name"`
 	LogMaxSize         int    `yaml:"log_max_size"`

@@ -7,8 +7,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ocybers-dev/ocybers/biz/dal"
-
 	gpaseto "aidanwoods.dev/go-paseto"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/middlewares/server/recovery"
@@ -22,6 +20,8 @@ import (
 	hertzlogrus "github.com/hertz-contrib/logger/logrus"
 	"github.com/hertz-contrib/paseto"
 	"github.com/hertz-contrib/pprof"
+	"github.com/ocybers-dev/ocybers/biz/dal"
+	"github.com/ocybers-dev/ocybers/biz/dal/casbin"
 	"github.com/ocybers-dev/ocybers/biz/router"
 	"github.com/ocybers-dev/ocybers/conf"
 	"go.uber.org/zap/zapcore"
@@ -36,14 +36,13 @@ func main() {
 
 	registerMiddleware(h)
 
-	// add a ping route to test
-	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+	router.GeneratedRegister(h)
+
+	h.GET("/ping", casbin.CasbinMiddleware.RequiresRoles("user admin"), func(c context.Context, ctx *app.RequestContext) {
 		a, b := ctx.Get("sub")
 		fmt.Println("sub: ", a, b)
 		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
 	})
-
-	router.GeneratedRegister(h)
 
 	h.Spin()
 }
@@ -112,4 +111,5 @@ func registerMiddleware(h *server.Hertz) {
 		c.Set("sub", sub)
 	}
 	h.Use(paseto.New(paseto.WithNext(next), paseto.WithParseFunc(parseFunc), paseto.WithSuccessHandler(successFunc)))
+
 }
