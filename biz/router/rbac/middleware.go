@@ -4,16 +4,17 @@ package rbac
 
 import (
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/ocybers-dev/ocybers/biz/dal/casbin"
 )
 
 func rootMw() []app.HandlerFunc {
-	// your code...
 	return nil
 }
 
 func _rbacMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{
+		casbin.AutoDBRoleMW(), // 应用Casbin中间件
+	}
 }
 
 func _assignpermissiontoroleMw() []app.HandlerFunc {

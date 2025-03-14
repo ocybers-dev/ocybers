@@ -71,30 +71,17 @@ func (h *LoginService) Run(req *user.LoginReq) (resp *user.LoginResp, err error)
 	genTokenFunc, err := paseto.NewV4EncryptFunc(conf.GetConf().Hertz.PaseToSymmetricKey, []byte(conf.GetConf().Hertz.PaseToImplicit))
 	if err != nil {
 		hlog.CtxErrorf(h.Context, "生成token函数失败: %v", err)
-		return nil, errors.New("内部服务器错误1")
+		return nil, errors.New("内部服务器错误")
 	}
 	token, err := genTokenFunc(&paseto.StandardClaims{
 		Issuer:    conf.GetConf().Hertz.PaseToIssuer,
 		Subject:   existingUser.ID,
-		Audience:  "Ocybers端",
+		Audience:  "Ocybers",
 		Jti:       uuid,
 		ExpiredAt: now.Add(time.Duration(conf.GetConf().Hertz.PaseToExpired) * time.Hour),
 		NotBefore: now,
 		IssuedAt:  now,
 	}, nil, nil)
-	// token, err := paseto.DefaultGenTokenFunc()(&paseto.StandardClaims{
-	// 	Issuer:    conf.GetConf().Hertz.PaseToIssuer,
-	// 	Subject:   existingUser.ID,
-	// 	Audience:  "Ocybers端",
-	// 	Jti:       uuid,
-	// 	ExpiredAt: now.Add(time.Duration(conf.GetConf().Hertz.PaseToExpired) * time.Hour),
-	// 	NotBefore: now,
-	// 	IssuedAt:  now,
-	// }, nil, nil)
-	// if err != nil {
-	// 	hlog.Error("生成token失败: %v", err)
-	// 	return nil, errors.New("内部服务器错误")
-	// }
 
 	// 4. 更新最后登录时间
 	existingUser.LastLoginAt = &now

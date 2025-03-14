@@ -4,7 +4,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	gpaseto "aidanwoods.dev/go-paseto"
@@ -12,8 +11,6 @@ import (
 	"github.com/cloudwego/hertz/pkg/app/middlewares/server/recovery"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
-	"github.com/cloudwego/hertz/pkg/common/utils"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
 	"github.com/hertz-contrib/cors"
 	"github.com/hertz-contrib/gzip"
 	"github.com/hertz-contrib/logger/accesslog"
@@ -21,7 +18,6 @@ import (
 	"github.com/hertz-contrib/paseto"
 	"github.com/hertz-contrib/pprof"
 	"github.com/ocybers-dev/ocybers/biz/dal"
-	"github.com/ocybers-dev/ocybers/biz/dal/casbin"
 	"github.com/ocybers-dev/ocybers/biz/router"
 	"github.com/ocybers-dev/ocybers/conf"
 	"go.uber.org/zap/zapcore"
@@ -38,27 +34,6 @@ func main() {
 
 	router.GeneratedRegister(h)
 
-	h.GET("/ping", casbin.AutoDBRoleMW(), func(c context.Context, ctx *app.RequestContext) {
-		// 获取用户标识（sub）
-		sub, exists := ctx.Get("sub")
-		if exists {
-			fmt.Println(sub)
-		}
-		subStr, ok := sub.(string)
-		if !ok {
-			hlog.Warn("'sub' 字段不是字符串类型")
-			ctx.JSON(consts.StatusForbidden, utils.H{"error": "无效的用户标识"})
-			return
-		}
-
-		b, err := casbin.E.AddRoleForUser(subStr, "admin")
-		fmt.Println(b, err)
-
-		// 返回成功响应
-		ctx.JSON(consts.StatusOK, utils.H{"ping": "pong"})
-	})
-	//routeInfo := h.Routes()
-	//fmt.Println(routeInfo)
 	h.Spin()
 }
 
@@ -111,6 +86,7 @@ func registerMiddleware(h *server.Hertz) {
 	//paseto(JWT)
 	next := func(ctx context.Context, c *app.RequestContext) bool {
 		return string(c.Path()) == "/user/login" || string(c.Path()) == "/user/register"
+
 	}
 	parseFunc, _ := paseto.NewV4LocalParseFunc(
 		conf.GetConf().Hertz.PaseToSymmetricKey,
@@ -126,5 +102,4 @@ func registerMiddleware(h *server.Hertz) {
 		c.Set("sub", sub)
 	}
 	h.Use(paseto.New(paseto.WithNext(next), paseto.WithParseFunc(parseFunc), paseto.WithSuccessHandler(successFunc)))
-
 }

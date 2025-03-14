@@ -3,6 +3,8 @@ package casbin
 import (
 	"context"
 	"fmt"
+	"strings"
+
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/model"
 	gormadapter "github.com/casbin/gorm-adapter/v3"
@@ -14,7 +16,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	_casbin "github.com/hertz-contrib/casbin"
 	"github.com/ocybers-dev/ocybers/conf"
-	"strings"
 )
 
 var (
@@ -69,7 +70,6 @@ func AutoDBRoleMW() app.HandlerFunc {
 			c.Abort()
 			return
 		}
-
 		// 如果没有找到任何角色与路径匹配，返回未授权错误
 		if len(filteredPolicy) == 0 {
 			hlog.CtxWarnf(ctx, "当前接口无角色开放，请联系开发者: %s", path)
@@ -84,7 +84,6 @@ func AutoDBRoleMW() app.HandlerFunc {
 			roles = append(roles, policy[0])
 		}
 		rolesStr := strings.Join(roles, " ")
-
 		// 调用 Casbin 中间件，进行角色验证
 		middleware.RequiresRoles(rolesStr,
 			_casbin.WithLogic(_casbin.OR),
@@ -107,6 +106,7 @@ func AutoDBRoleMW() app.HandlerFunc {
 // initPermissions 初始化路径权限
 func initPermissions() {
 	// 预设的权限列表，包含路径和方法
+
 	defaultPolicies := [][]string{
 		// 用户访问权限
 		{"admin", "/ping", "GET"},
@@ -141,7 +141,6 @@ func initPermissions() {
 		}
 
 		if exists {
-			// 如果权限已存在，跳过
 			continue
 		}
 
@@ -219,6 +218,5 @@ func subjectFromContext(ctx context.Context, c *app.RequestContext) string {
 		hlog.CtxWarnf(ctx, "'sub' 字段不是字符串类型")
 		return ""
 	}
-
 	return subject
 }

@@ -10,4 +10,5 @@ func Init() {
 	//redis.Init()
 	casbin.Init()
 
+	mysql.InitAdminUser()
 }
